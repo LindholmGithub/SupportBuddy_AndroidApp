@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/linearLayout1"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:orientation="horizontal"
+        android:background="@color/supportBlue"
+        android:layout_gravity="center">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Support Buddy Tickets"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="15dp" />
+
+        <Button
+            android:id="@+id/AddTicketButton"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_marginTop="13dp"
+            android:layout_marginStart="15dp"
+            android:text="+"
+            android:backgroundTint="@color/supportLightBlue"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lvTickets"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linearLayout1"/>
+
+</RelativeLayout>
