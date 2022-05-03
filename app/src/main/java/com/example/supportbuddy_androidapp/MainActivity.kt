@@ -1,6 +1,7 @@
 package com.example.supportbuddy_androidapp
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,18 +11,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
-import android.widget.ListAdapter
 import android.widget.TextView
-import androidx.lifecycle.Observer
 import com.example.supportbuddy_androidapp.data.ICallback
 import com.example.supportbuddy_androidapp.data.Ticket
 import com.example.supportbuddy_androidapp.data.TicketRepo
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var ticketsList : TicketRepo
 
-    val mRepo = TicketRepo()
+    private lateinit var ticketList : TicketRepo
 
     companion object{
         val TAG = "xyz"
@@ -32,15 +30,34 @@ class MainActivity : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)
 
-        mRepo.getAll(object:ICallback{
+        TicketRepo.initialize(this)
+
+        setListTicketsAdapter()
+
+        AddTicketButton.setOnClickListener {
+            val newBundle = Bundle()
+            startEditTicketActivity(newBundle)
+        }
+    }
+
+    private fun setListTicketsAdapter(){
+        ticketList = TicketRepo.get()
+        ticketList.getAll(object:ICallback{
             override fun onTicketsReady(tickets: List<Ticket>) {
                 setupListView(tickets)
             }
         })
     }
 
-    fun setupListView(tickets: List<Ticket>) {
+    private fun startEditTicketActivity(b: Bundle) {
+        val newIntent = Intent(this, EditTicketActivity::class.java)
+        newIntent.putExtras(b)
+        startActivity(newIntent)
+        ticketList = TicketRepo.get()
+    }
 
+    fun setupListView(tickets: List<Ticket>) {
+        ticketList = TicketRepo.get()
         val adapter = TicketAdapter(this, tickets.toTypedArray())
         lvTickets.adapter = adapter
 
