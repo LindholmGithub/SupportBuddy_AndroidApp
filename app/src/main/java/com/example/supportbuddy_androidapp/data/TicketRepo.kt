@@ -64,7 +64,7 @@ class TicketRepo(context: Context) {
                 responseBody: ByteArray?,
                 error: Throwable?
             ) {
-                Log.d(MainActivity.TAG, "Failure in getAll statusCode = $statusCode")
+                Log.d(MainActivity.TAG, "Failure in addTicket statusCode = $statusCode")
             }
         })
         return newTicket
