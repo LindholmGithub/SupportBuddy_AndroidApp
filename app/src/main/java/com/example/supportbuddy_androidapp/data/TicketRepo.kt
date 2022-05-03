@@ -49,7 +49,6 @@ class TicketRepo(context: Context) {
         val newTicket = TicketDTO_Out(newSubject,newMessage,newEmail,newFirstName,newLastName,newPhone)
         val gson = GsonBuilder().disableHtmlEscaping().create()
         val jsonTicket: String = gson.toJson(newTicket)
-        println(jsonTicket)
         val entity = StringEntity(jsonTicket)
         httpClient.post(context, url, entity, "application/json", object : AsyncHttpResponseHandler(){
             override fun onSuccess(
