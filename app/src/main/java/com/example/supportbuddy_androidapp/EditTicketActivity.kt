@@ -15,7 +15,6 @@ class EditTicketActivity : AppCompatActivity() {
     private lateinit var ticketList: TicketRepo
     var isEditMode : Boolean = false
     var editTicketId : Int = 0
-    val REQUEST_IMAGE_CAPTURE = 1
     var editTicketObject: Ticket? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,7 +101,7 @@ class EditTicketActivity : AppCompatActivity() {
                         endEditTicketActivity()
                     }, 1500)
                 } else {
-                    //TODO - Add Edit Functionality (With resolved)
+                    //TODO - Add Edit Functionality (With resolved on ticket)
                 }
             }
         }
