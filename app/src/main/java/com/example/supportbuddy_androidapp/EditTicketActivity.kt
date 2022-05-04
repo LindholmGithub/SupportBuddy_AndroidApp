@@ -1,111 +1,66 @@
 package com.example.supportbuddy_androidapp
 
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.view.View
-import android.widget.Toast
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import android.os.Bundle
+import com.example.supportbuddy_androidapp.data.ITicketCallback
 import com.example.supportbuddy_androidapp.data.Ticket
 import com.example.supportbuddy_androidapp.data.TicketRepo
 import kotlinx.android.synthetic.main.activity_edit_ticket.*
+import kotlinx.android.synthetic.main.activity_edit_ticket.GoBackButton
 
 class EditTicketActivity : AppCompatActivity() {
-    private lateinit var ticketList: TicketRepo
-    var isEditMode : Boolean = false
-    var editTicketId : Int = 0
-    var editTicketObject: Ticket? = null
+    private lateinit var ticketRepo: TicketRepo
+    private var editTicketId : Int = 0
+    private var editTicketObject : Ticket? = null
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         val errorMessage = "No application found to handle action!"
         if(intent.extras != null){
             val b = intent.extras!!
             val editId = b.getInt("editTicketId")
             if(editId != null && editId > 0){
-                isEditMode = true
                 editTicketId = editId
             }
         }
-
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_edit_ticket)
 
-        ticketList = TicketRepo.get()
+        TicketRepo.initialize(this)
 
-        DeleteTicketButton.visibility = View.GONE
-        ActionsBar.visibility = View.GONE
+        setTicketAdapter()
 
-        if(isEditMode){
-            val getOneObserver = Observer<Ticket>{ ticket ->
-                if(isEditMode) {
-                    editTicketObject = ticket
-                    //TODO - Add Edit Functionality
-                    DeleteTicketButton.visibility = View.VISIBLE
-                    ActionsBar.visibility = View.VISIBLE
-                }
-            }
+        //editTicketObject = ticketList.getTicketById(editTicketId)
+        // val ticket = editTicketObject as Ticket
 
-            //TODO - Observe getTicketById
-        }
+        //Handler for Back Button
         GoBackButton.setOnClickListener {
-           endEditTicketActivity()
+            endEditTicketActivity()
         }
 
-        DeleteTicketButton.setOnClickListener {
-            isEditMode = false
-
-            //TODO - Add Delete Functionality
-            //ticketList.deleteTicket(editTicketId)
-
-            Toast.makeText(
-                this,
-                "Ticket was deleted",
-                Toast.LENGTH_SHORT
-            ).show()
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                endEditTicketActivity()
-            }, 1500)
-        }
-
-        SaveTicketButton.setOnClickListener {
-            val newSubject = TicketSubject.text.toString()
-            val newMessage = TicketMessage.text.toString()
-            val newEmail = TicketEmail.text.toString()
-            val newFirstName = TicketFirstName.text.toString()
-            val newLastName = TicketLastName.text.toString()
-            val newPhone = TicketPhone.text.toString().toInt()
-
-
-            if(newSubject.isEmpty() ||
-                newMessage.isEmpty() ||
-                newEmail.isEmpty() ||
-                newFirstName.isEmpty() ||
-                newLastName.isEmpty() ||
-                newPhone == 0
-            ){
-                Toast.makeText(this,"Fields cannot be empty!",Toast.LENGTH_SHORT).show()
-            } else {
-                if(!isEditMode) {
-
-                    val newTicket = ticketList.addTicket(newSubject, newMessage, newEmail, newFirstName, newLastName, newPhone)
-                    Toast.makeText(
-                        this,
-                        "Ticket was saved",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                    Handler(Looper.getMainLooper()).postDelayed({
-
-                        endEditTicketActivity()
-                    }, 1500)
-                } else {
-                    //TODO - Add Edit Functionality (With resolved on ticket)
-                }
-            }
-        }
     }
+
+    private fun setTicketAdapter(){
+        ticketRepo = TicketRepo.get()
+        ticketRepo.getTicketById(editTicketId, object: ITicketCallback {
+            override fun onTicketReady(ticket: Ticket) {
+                setupTicketView(ticket)
+            }
+        })
+    }
+
+    private fun setupTicketView(ticket: Ticket) {
+        TicketHeader.setText("Ticket #${ticket.id}")
+        TicketFullName.setText("${ticket.firstName} ${ticket.lastName}")
+        TicketEmail.setText("E-mail: ${ticket.email}")
+        TicketPhone.setText("Phone: ${ticket.phoneNumber}")
+        TicketStatus.setText("Ticket Status: ${ticket.status}")
+        TicketSubject.setText(ticket.subject)
+        TicketMessage.setText(ticket.message)
+    }
+
 
     private fun endEditTicketActivity() {
         finish()

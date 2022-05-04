@@ -13,14 +13,19 @@ import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import cz.msebera.android.httpclient.entity.StringEntity
 import org.json.JSONException
+import java.lang.Exception
 
 
-class TicketRepo(context: Context) {
+class TicketRepo constructor(context: Context) {
 
     private val url = "http://vps.qvistgaard.me:8980/api/Ticket"
     private val context = context;
 
     private val httpClient: AsyncHttpClient = AsyncHttpClient()
+
+    init {
+        //httpClient.addHeader()
+    }
 
     fun getAll(callback: ICallback){
         httpClient.get(url, object : AsyncHttpResponseHandler(){
@@ -41,6 +46,30 @@ class TicketRepo(context: Context) {
                 error: Throwable?
             ) {
                 Log.d(MainActivity.TAG, "Failure in getAll statusCode = $statusCode")
+            }
+        })
+    }
+
+    fun getTicketById(id: Int, callback: ITicketCallback) {
+        var ticket: Ticket
+        httpClient.get(url + "/" + id, object : AsyncHttpResponseHandler(){
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?
+            ) {
+                ticket = getTicketFromString(String(responseBody!!))
+                Log.d(MainActivity.TAG, "Ticket received")
+                callback.onTicketReady(ticket)
+            }
+
+            override fun onFailure(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?,
+                error: Throwable?
+            ) {
+                Log.d(MainActivity.TAG, "Failure in getById statusCode = $statusCode")
             }
         })
     }
@@ -67,6 +96,24 @@ class TicketRepo(context: Context) {
             }
         })
         return newTicket
+    }
+
+    private fun getTicketFromString(jsonString: String?): Ticket{
+        println(jsonString)
+        if (jsonString!!.startsWith("error")) {
+            Log.d(MainActivity.TAG, "Error: $jsonString")
+        }
+        if (jsonString == null){
+            Log.d(MainActivity.TAG, "Error: NO RESULT")
+        }
+
+        try {
+            return Gson().fromJson(jsonString, Ticket::class.java)
+
+        } catch (e: JSONException){
+            e.printStackTrace()
+        }
+        throw Exception("Hej")
     }
 
     private fun getTicketsFromString(jsonString: String?): List<Ticket>{

@@ -8,7 +8,7 @@
     >
 
     <LinearLayout
-        android:id="@+id/editHeader"
+        android:id="@+id/createHeader"
         android:layout_width="match_parent"
         android:layout_height="75dp"
         android:orientation="horizontal"
@@ -16,10 +16,9 @@
         android:layout_gravity="center"
         android:layout_alignParentTop="true">
         <TextView
-            android:id="@+id/TicketHeader"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Ticket "
+            android:text="Tickets List"
             android:textColor="@color/white"
             android:textSize="28sp"
             android:textStyle="bold"
@@ -31,7 +30,7 @@
             android:layout_width="75dp"
             android:layout_height="50dp"
             android:textStyle="bold"
-            android:textSize="10sp"
+            android:textSize="8sp"
             android:layout_marginTop="13dp"
             android:layout_marginStart="15dp"
             android:text="Back"
@@ -46,64 +45,68 @@
         android:orientation="vertical"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:layout_below="@id/editHeader">
+        android:layout_below="@id/createHeader">
 
-        <TextView
-            android:id="@+id/TicketFullName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="17dp"/>
 
-        <TextView
-            android:id="@+id/TicketStatus"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginBottom="17dp"
-            android:focusable="false"
-            android:longClickable="false"
-            android:clickable="false"/>
-
-        <TextView
-            android:id="@+id/TicketEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginBottom="17dp"
-            android:focusable="false"
-            android:longClickable="false"
-            android:clickable="false"/>
-
-        <TextView
-            android:id="@+id/TicketPhone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:layout_marginBottom="17dp"
-            android:focusable="false"
-            android:longClickable="false"
-            android:clickable="false"/>
-
-        <TextView
+        <EditText
             android:id="@+id/TicketSubject"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:layout_marginBottom="17dp"
-            />
+            android:inputType="textEmailSubject"
+            android:hint="Subject"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="17dp" />
 
-        <TextView
+        <EditText
             android:id="@+id/TicketMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:layout_marginBottom="17dp"
-            android:focusable="false"
-            android:longClickable="false"
-            android:clickable="false"/>
+            android:inputType="textLongMessage"
+            android:hint="Message"
+            android:layout_marginBottom="17dp" />
 
+        <EditText
+            android:id="@+id/TicketFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="First Name"
+            android:layout_marginBottom="17dp" />
+
+        <EditText
+            android:id="@+id/TicketLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="Last Name"
+            android:layout_marginBottom="17dp" />
+
+        <EditText
+            android:id="@+id/TicketPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="phone"
+            android:hint="Phone Number"
+            android:layout_marginBottom="17dp"/>
+
+        <EditText
+            android:id="@+id/TicketEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textEmailAddress"
+            android:hint="Email"
+            android:layout_marginBottom="17dp"/>
+        <Button
+            android:id="@+id/SaveTicketButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Save Ticket" />
     </LinearLayout>
 
     <LinearLayout
@@ -112,33 +115,29 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:layout_alignParentBottom="true"
-        android:background="@color/supportBlue"
+        android:background="@color/teal_200"
         android:paddingTop="3dp"
         android:paddingBottom="3dp">
 
         <Button
-            android:id="@+id/TicketAnswerButton"
+            android:id="@+id/TicketCallButton"
             android:layout_width="110dp"
             android:layout_height="75dp"
-            android:backgroundTint="@color/supportLightBlue"
-            android:text="Answer" />
+            android:text="Call" />
 
         <Button
-            android:id="@+id/TicketCloseButton"
+            android:id="@+id/TicketSMSButton"
             android:layout_width="110dp"
             android:layout_height="75dp"
-            android:backgroundTint="@color/yellow"
-            android:text="Close Ticket"
+            android:text="SMS"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp" />
 
         <Button
-            android:id="@+id/TicketDeleteButton"
+            android:id="@+id/TicketEmailButton"
             android:layout_width="110dp"
             android:layout_height="75dp"
-            android:backgroundTint="@color/red"
-            android:text="Delete"
-            android:enabled="false"/>
+            android:text="E-mail" />
 
     </LinearLayout>
 </RelativeLayout>

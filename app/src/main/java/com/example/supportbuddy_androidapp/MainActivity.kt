@@ -32,12 +32,19 @@ class MainActivity : AppCompatActivity() {
 
         TicketRepo.initialize(this)
 
-        setListTicketsAdapter()
-
+        println("Hello")
         AddTicketButton.setOnClickListener {
             val newBundle = Bundle()
-            startEditTicketActivity(newBundle)
+            startCreateTicketActivity(newBundle)
         }
+        lvTickets.setOnItemClickListener{
+            _,_,pos, _ -> onTicketClick(pos)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setListTicketsAdapter()
     }
 
     private fun setListTicketsAdapter(){
@@ -49,11 +56,23 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
+    private fun startCreateTicketActivity(b: Bundle) {
+        val newIntent = Intent(this, CreateTicketActivity::class.java)
+        newIntent.putExtras(b)
+        startActivity(newIntent)
+    }
+
+    private fun onTicketClick(position: Int){
+        val clickedTicket = lvTickets.getItemAtPosition(position) as Ticket
+        val newBundle = Bundle()
+        newBundle.putInt("editTicketId", clickedTicket.id)
+        startEditTicketActivity(newBundle)
+    }
+
     private fun startEditTicketActivity(b: Bundle) {
         val newIntent = Intent(this, EditTicketActivity::class.java)
         newIntent.putExtras(b)
         startActivity(newIntent)
-        ticketList = TicketRepo.get()
     }
 
     fun setupListView(tickets: List<Ticket>) {
@@ -88,7 +107,7 @@ class MainActivity : AppCompatActivity() {
             nameView.text = t.firstName + " " + t.lastName
             subjectView.text = t.subject
 
-            statusView.setImageResource(if (t.status == "Closed") R.drawable.ok else R.drawable.notok)
+            statusView.setImageResource(if (t.status == "Open") R.drawable.ok else R.drawable.notok)
 
             return resView
         }

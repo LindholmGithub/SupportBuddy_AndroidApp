@@ -11,4 +11,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="phoneColor">#FFFF7700</color>
     <color name="red">#d9534f</color>
+    <color name="yellow">#BB9300</color>
 </resources>
