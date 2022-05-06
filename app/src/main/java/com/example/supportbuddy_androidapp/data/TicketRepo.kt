@@ -5,6 +5,8 @@ import android.content.Context
 import android.util.Log
 import com.example.supportbuddy_androidapp.MainActivity
 import com.example.supportbuddy_androidapp.data.dto.TicketDTO_Out
+import com.google.gson.ExclusionStrategy
+import com.google.gson.FieldAttributes
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
@@ -26,6 +28,7 @@ class TicketRepo constructor(context: Context) {
     init {
         //httpClient.addHeader()
     }
+
 
     fun getAll(callback: ICallback){
         httpClient.get(url, object : AsyncHttpResponseHandler(){
@@ -99,7 +102,6 @@ class TicketRepo constructor(context: Context) {
     }
 
     private fun getTicketFromString(jsonString: String?): Ticket{
-        println(jsonString)
         if (jsonString!!.startsWith("error")) {
             Log.d(MainActivity.TAG, "Error: $jsonString")
         }
@@ -117,6 +119,7 @@ class TicketRepo constructor(context: Context) {
     }
 
     private fun getTicketsFromString(jsonString: String?): List<Ticket>{
+
         val ticketList = ArrayList<Ticket>()
 
         if (jsonString!!.startsWith("error")) {
@@ -139,6 +142,7 @@ class TicketRepo constructor(context: Context) {
 
         return ticketList
     }
+
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var Instance: TicketRepo? = null

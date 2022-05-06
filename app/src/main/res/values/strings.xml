@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SupportBuddy_AndroidApp</string>
+    <string name="lineSeparator">_________________________________________</string>
 </resources>

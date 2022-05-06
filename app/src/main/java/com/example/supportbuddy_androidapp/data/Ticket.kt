@@ -8,6 +8,8 @@ data class Ticket(
     val email: String,
     val firstName: String,
     val lastName: String,
-    val phoneNumber: Int
+    val phoneNumber: Int,
+    val answers: Array<Answer>,
+    val timeStamp: String
 
 )
