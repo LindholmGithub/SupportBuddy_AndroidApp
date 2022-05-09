@@ -167,15 +167,13 @@ class TicketRepo constructor(context: Context) {
         return ticketList
     }
 
-    fun closeTicket(id: Int): Boolean {
-        var success = false
+    fun closeTicket(id: Int){
         httpClient.post(url + "/" + id + "/close", object : AsyncHttpResponseHandler(){ override fun onSuccess(
             statusCode: Int,
             headers: Array<out Header>?,
             responseBody: ByteArray?,
-        ) {
-            success = true
-        }override fun onFailure(
+        ) {}
+            override fun onFailure(
             statusCode: Int,
             headers: Array<out Header>?,
             responseBody: ByteArray?,
@@ -184,7 +182,6 @@ class TicketRepo constructor(context: Context) {
             Log.d(MainActivity.TAG, "Failure in addTicketAnswer statusCode = $statusCode")
         }
         })
-        return success
     }
 
     fun deleteTicket(id: Int) {

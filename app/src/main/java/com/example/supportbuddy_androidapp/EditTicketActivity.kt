@@ -24,6 +24,7 @@ class EditTicketActivity : AppCompatActivity() {
     private var editTicketObject : Ticket? = null
     private var m_Text = ""
     private var isClosed : Boolean = false
+    private var activityTest : Activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val errorMessage = "No application found to handle action!"
@@ -36,6 +37,8 @@ class EditTicketActivity : AppCompatActivity() {
             }
             if(editStatus != null && editStatus == "Closed"){
                 isClosed = true
+            } else if (editStatus == "Open"){
+                isClosed = false
             }
         }
 
@@ -62,13 +65,11 @@ class EditTicketActivity : AppCompatActivity() {
             }
             TicketCloseButton.setOnClickListener{
                 closeTicket()
-                val starterIntent = intent;
-                finish()
-                startActivity(starterIntent);
+                println(isClosed)
+                isClosed = true
+                activityTest.recreate()
             }
-        }
-
-        if(isClosed){
+        } else {
             TicketAnswerButton.isEnabled = false
             TicketCloseButton.isEnabled = false
             TicketDeleteButton.isEnabled = true
@@ -105,9 +106,7 @@ class EditTicketActivity : AppCompatActivity() {
     }
 
     private fun closeTicket() {
-        if(ticketRepo.closeTicket(editTicketId)){
-            isClosed = true
-        }
+        ticketRepo.closeTicket(editTicketId)
     }
 
 
