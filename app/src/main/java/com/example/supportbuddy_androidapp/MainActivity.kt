@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
         val clickedTicket = lvTickets.getItemAtPosition(position) as Ticket
         val newBundle = Bundle()
         newBundle.putInt("editTicketId", clickedTicket.id)
+        newBundle.putString("editTicketStatus", clickedTicket.status)
         startEditTicketActivity(newBundle)
     }
 

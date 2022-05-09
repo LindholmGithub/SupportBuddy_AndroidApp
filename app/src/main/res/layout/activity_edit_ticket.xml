@@ -3,43 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    tools:context=".EditTicketActivity">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/editHeader"
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_gravity="center"
-        android:background="@color/supportBlue"
-        android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/TicketHeader"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="18dp"
-            android:text="Ticket "
-            android:textColor="@color/white"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/GoBackButton"
-            android:layout_width="75dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="13dp"
-            android:backgroundTint="@color/supportLightBlue"
-            android:text="Back"
-            android:textColor="@color/black"
-            android:textSize="10sp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
     <ScrollView
         android:id="@+id/ScrollStart"
         android:layout_width="match_parent"
@@ -97,7 +63,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="10dp"
                     android:ems="10"
-                    android:text="@string/lineSeparator" />
+                    android:text="@string/lineSeparator"
+                    />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -105,7 +72,8 @@
                     android:layout_marginBottom="5dp"
                     android:ems="10"
                     android:text="Subject:"
-                    android:textSize="18sp"
+                    android:textColor="@color/supportBlue"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -123,7 +91,8 @@
                     android:layout_marginBottom="5dp"
                     android:ems="10"
                     android:text="Message:"
-                    android:textSize="18sp"
+                    android:textColor="@color/supportBlue"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <TextView
@@ -149,18 +118,50 @@
                     android:layout_marginBottom="5dp"
                     android:ems="10"
                     android:text="Answers:"
-                    android:textSize="18sp"
+                    android:textColor="@color/supportBlue"
+                    android:textSize="20sp"
                     android:textStyle="bold" />
 
                 <ListView
                     android:id="@+id/lvAnswers"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:focusable="false"
-                    android:focusableInTouchMode="false" />
+                    android:layout_height="wrap_content"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+    <LinearLayout
+        android:id="@+id/editHeader"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:layout_gravity="center"
+        android:background="@color/supportBlue"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/TicketHeader"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="18dp"
+            android:text="Ticket "
+            android:textColor="@color/white"
+            android:textSize="28sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/GoBackButton"
+            android:layout_width="75dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="13dp"
+            android:backgroundTint="@color/supportLightBlue"
+            android:text="Back"
+            android:textColor="@color/black"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+    </LinearLayout>
     <LinearLayout
         android:id="@+id/ActionsBar"
         android:layout_width="match_parent"
@@ -170,28 +171,29 @@
         android:paddingTop="3dp"
         android:paddingBottom="3dp"
         app:layout_constraintBottom_toBottomOf="parent"
-
         >
 
         <Button
             android:id="@+id/TicketAnswerButton"
-            android:layout_width="110dp"
+            android:layout_width="117dp"
             android:layout_height="75dp"
             android:backgroundTint="@color/supportLightBlue"
+            android:enabled="true"
             android:text="Answer" />
 
         <Button
             android:id="@+id/TicketCloseButton"
-            android:layout_width="110dp"
+            android:layout_width="117dp"
             android:layout_height="75dp"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
             android:backgroundTint="@color/yellow"
-            android:text="Close Ticket" />
+            android:text="Close Ticket"
+            android:enabled="true"/>
 
         <Button
             android:id="@+id/TicketDeleteButton"
-            android:layout_width="110dp"
+            android:layout_width="117dp"
             android:layout_height="75dp"
             android:backgroundTint="@color/red"
             android:enabled="false"

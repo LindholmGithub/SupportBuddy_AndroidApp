@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.supportbuddy_androidapp.data.Ticket
 import com.example.supportbuddy_androidapp.data.TicketRepo
+import com.example.supportbuddy_androidapp.data.dto.TicketDTO_Out
 import kotlinx.android.synthetic.main.activity_create_ticket.*
 
 class CreateTicketActivity : AppCompatActivity() {
@@ -50,10 +51,10 @@ class CreateTicketActivity : AppCompatActivity() {
             ){
                 Toast.makeText(this,"Fields cannot be empty!",Toast.LENGTH_SHORT).show()
             } else {
-                val newTicket = ticketList.addTicket(newSubject, newMessage, newEmail, newFirstName, newLastName, newPhone) as Ticket
+                val newTicket = ticketList.addTicket(newSubject, newMessage, newEmail, newFirstName, newLastName, newPhone) as TicketDTO_Out
                 Toast.makeText(
                     this,
-                    "Ticket ${newTicket.id} was added",
+                    "Ticket was added",
                     Toast.LENGTH_SHORT
                 ).show()
                 Handler(Looper.getMainLooper()).postDelayed({

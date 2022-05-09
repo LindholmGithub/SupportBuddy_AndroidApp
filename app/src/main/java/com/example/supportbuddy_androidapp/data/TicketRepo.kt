@@ -2,19 +2,18 @@ package com.example.supportbuddy_androidapp.data
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.JsonReader
 import android.util.Log
 import com.example.supportbuddy_androidapp.MainActivity
 import com.example.supportbuddy_androidapp.data.dto.TicketDTO_Out
-import com.google.gson.ExclusionStrategy
-import com.google.gson.FieldAttributes
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
+import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import com.loopj.android.http.AsyncHttpClient
 import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import cz.msebera.android.httpclient.entity.StringEntity
 import org.json.JSONException
+import org.json.JSONObject
 import java.lang.Exception
 
 
@@ -101,6 +100,31 @@ class TicketRepo constructor(context: Context) {
         return newTicket
     }
 
+    fun addTicketAnswer(id: Int, message: String): Any {
+        val jsonMap : MutableMap<String, String> = mutableMapOf()
+        jsonMap.put("message", message)
+        val gson = Gson()
+        val jsonString : String = gson.toJson(jsonMap)
+        val entity = StringEntity(jsonString)
+        httpClient.post(context, url + "/" + id, entity, "application/json", object : AsyncHttpResponseHandler(){
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?
+            ) {}
+
+            override fun onFailure(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?,
+                error: Throwable?
+            ) {
+                Log.d(MainActivity.TAG, "Failure in addTicketAnswer statusCode = $statusCode")
+            }
+        })
+        return message
+    }
+
     private fun getTicketFromString(jsonString: String?): Ticket{
         if (jsonString!!.startsWith("error")) {
             Log.d(MainActivity.TAG, "Error: $jsonString")
@@ -141,6 +165,45 @@ class TicketRepo constructor(context: Context) {
         }
 
         return ticketList
+    }
+
+    fun closeTicket(id: Int): Boolean {
+        var success = false
+        httpClient.post(url + "/" + id + "/close", object : AsyncHttpResponseHandler(){ override fun onSuccess(
+            statusCode: Int,
+            headers: Array<out Header>?,
+            responseBody: ByteArray?,
+        ) {
+            success = true
+        }override fun onFailure(
+            statusCode: Int,
+            headers: Array<out Header>?,
+            responseBody: ByteArray?,
+            error: Throwable?
+        ) {
+            Log.d(MainActivity.TAG, "Failure in addTicketAnswer statusCode = $statusCode")
+        }
+        })
+        return success
+    }
+
+    fun deleteTicket(id: Int) {
+        httpClient.delete(context, url + "/" + id, object : AsyncHttpResponseHandler(){
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?
+            ) {}
+
+            override fun onFailure(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                responseBody: ByteArray?,
+                error: Throwable?
+            ) {
+                Log.d(MainActivity.TAG, "Failure in addTicketAnswer statusCode = $statusCode")
+            }
+        })
     }
 
     companion object {

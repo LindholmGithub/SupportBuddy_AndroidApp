@@ -14,23 +14,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="NAME"
-            android:textColor="@color/phoneColor"
-            android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textColor="@color/supportLightBlue"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="3dp"/>
 
         <TextView
             android:id="@+id/tvAnswerMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="0dp"
-            android:text="MESSAGE" />
+            android:text="MESSAGE"
+            android:textSize="15sp"
+            android:layout_marginBottom="5dp"
+            />
 
         <TextView
             android:id="@+id/tvAnswerDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="5dp"
-            android:text="DATE" />
+            android:layout_marginBottom="8dp"
+            android:text="DATE"
+            android:textSize="12sp"
+            />
 
     </LinearLayout>
 </LinearLayout>
