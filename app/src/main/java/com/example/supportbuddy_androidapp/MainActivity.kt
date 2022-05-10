@@ -33,6 +33,7 @@ class MainActivity : AppCompatActivity() {
         TicketRepo.initialize(this)
 
         println("Hello")
+        imgLogo.setImageResource(R.drawable.onlylogo)
         AddTicketButton.setOnClickListener {
             val newBundle = Bundle()
             startCreateTicketActivity(newBundle)
