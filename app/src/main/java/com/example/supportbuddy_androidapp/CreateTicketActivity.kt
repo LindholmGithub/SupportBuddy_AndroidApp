@@ -6,13 +6,12 @@ import android.os.Looper
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.supportbuddy_androidapp.data.Ticket
 import com.example.supportbuddy_androidapp.data.TicketRepo
 import com.example.supportbuddy_androidapp.data.dto.TicketDTO_Out
 import kotlinx.android.synthetic.main.activity_create_ticket.*
 
 class CreateTicketActivity : AppCompatActivity() {
-    private lateinit var ticketList: TicketRepo
+    private lateinit var ticketRepo: TicketRepo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val errorMessage = "No application found to handle action!"
@@ -25,7 +24,7 @@ class CreateTicketActivity : AppCompatActivity() {
         supportActionBar?.hide()
         setContentView(R.layout.activity_create_ticket)
 
-        ticketList = TicketRepo.get()
+        ticketRepo = TicketRepo.get()
 
         ActionsBar.visibility = View.GONE
 
@@ -51,7 +50,7 @@ class CreateTicketActivity : AppCompatActivity() {
             ){
                 Toast.makeText(this,"Fields cannot be empty!",Toast.LENGTH_SHORT).show()
             } else {
-                val newTicket = ticketList.addTicket(newSubject, newMessage, newEmail, newFirstName, newLastName, newPhone) as TicketDTO_Out
+                val newTicket = ticketRepo.addTicket(newSubject, newMessage, newEmail, newFirstName, newLastName, newPhone) as TicketDTO_Out
                 Toast.makeText(
                     this,
                     "Ticket was added",

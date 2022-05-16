@@ -3,7 +3,6 @@ package com.example.supportbuddy_androidapp
 import android.app.Activity
 import android.content.Context
 import android.content.DialogInterface
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -15,6 +14,9 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import com.example.supportbuddy_androidapp.data.*
+import com.example.supportbuddy_androidapp.data.callback.ITicketCallback
+import com.example.supportbuddy_androidapp.data.models.Answer
+import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.utils.UIUtils
 import kotlinx.android.synthetic.main.activity_edit_ticket.*
 

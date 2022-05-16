@@ -2,10 +2,12 @@ package com.example.supportbuddy_androidapp.data
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.JsonReader
 import android.util.Log
 import com.example.supportbuddy_androidapp.MainActivity
+import com.example.supportbuddy_androidapp.data.callback.ICallback
+import com.example.supportbuddy_androidapp.data.callback.ITicketCallback
 import com.example.supportbuddy_androidapp.data.dto.TicketDTO_Out
+import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import com.loopj.android.http.AsyncHttpClient
@@ -13,14 +15,12 @@ import com.loopj.android.http.AsyncHttpResponseHandler
 import cz.msebera.android.httpclient.Header
 import cz.msebera.android.httpclient.entity.StringEntity
 import org.json.JSONException
-import org.json.JSONObject
 import java.lang.Exception
 
 
-class TicketRepo constructor(context: Context) {
+class TicketRepo constructor(private val context: Context) {
 
     private val url = "http://vps.qvistgaard.me:8980/api/Ticket"
-    private val context = context;
 
     private val httpClient: AsyncHttpClient = AsyncHttpClient()
 
@@ -76,7 +76,7 @@ class TicketRepo constructor(context: Context) {
         })
     }
 
-    fun addTicket(newSubject: String, newMessage: String, newEmail: String, newFirstName: String, newLastName: String, newPhone: Int): Any {
+    fun addTicket(newSubject: String, newMessage: String, newEmail: String, newFirstName: String, newLastName: String, newPhone: Int): TicketDTO_Out {
         val newTicket = TicketDTO_Out(newSubject,newMessage,newEmail,newFirstName,newLastName,newPhone)
         val gson = GsonBuilder().disableHtmlEscaping().create()
         val jsonTicket: String = gson.toJson(newTicket)
@@ -125,7 +125,7 @@ class TicketRepo constructor(context: Context) {
         return message
     }
 
-    private fun getTicketFromString(jsonString: String?): Ticket{
+    private fun getTicketFromString(jsonString: String?): Ticket {
         if (jsonString!!.startsWith("error")) {
             Log.d(MainActivity.TAG, "Error: $jsonString")
         }
@@ -214,7 +214,7 @@ class TicketRepo constructor(context: Context) {
 
         fun get(): TicketRepo {
             if (Instance != null) return Instance!!
-            throw IllegalStateException("Friend Repository not initialized")
+            throw IllegalStateException("Ticket Repository not initialized")
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.example.supportbuddy_androidapp.data
+package com.example.supportbuddy_androidapp.data.models
 
 data class Ticket(
     val id: Int,

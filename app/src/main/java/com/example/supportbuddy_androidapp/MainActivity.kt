@@ -12,14 +12,14 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
-import com.example.supportbuddy_androidapp.data.ICallback
-import com.example.supportbuddy_androidapp.data.Ticket
+import com.example.supportbuddy_androidapp.data.callback.ICallback
+import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.data.TicketRepo
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var ticketList : TicketRepo
+    private lateinit var ticketRepo : TicketRepo
 
     companion object{
         val TAG = "xyz"
@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
 
         TicketRepo.initialize(this)
 
-        println("Hello")
         imgLogo.setImageResource(R.drawable.onlylogo)
         AddTicketButton.setOnClickListener {
             val newBundle = Bundle()
@@ -49,8 +48,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setListTicketsAdapter(){
-        ticketList = TicketRepo.get()
-        ticketList.getAll(object:ICallback{
+        ticketRepo = TicketRepo.get()
+        ticketRepo.getAll(object: ICallback {
             override fun onTicketsReady(tickets: List<Ticket>) {
                 setupListView(tickets)
             }
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setupListView(tickets: List<Ticket>) {
-        ticketList = TicketRepo.get()
+        ticketRepo = TicketRepo.get()
         val adapter = TicketAdapter(this, tickets.toTypedArray())
         lvTickets.adapter = adapter
 
