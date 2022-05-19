@@ -28,6 +28,7 @@ class AttachmentRepo constructor(private val context: Context) {
 
         try {
             params.put("file", attachmentFile)
+            params.put("filename", attachmentFile.name)
         } catch(e : FileNotFoundException) {}
 
         params.setForceMultipartEntityContentType(true)
