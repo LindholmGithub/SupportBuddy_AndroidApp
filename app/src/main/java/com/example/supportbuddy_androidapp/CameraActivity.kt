@@ -47,6 +47,8 @@ class CameraActivity : AppCompatActivity() {
 
         supportActionBar?.hide()
 
+        attachRepo = AttachmentRepo.get()
+
         //Camera permissions
         if (allPermissionsGranted()){
             startCamera()

@@ -1,5 +1,6 @@
 package com.example.supportbuddy_androidapp.data
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.JsonReader
 import com.example.supportbuddy_androidapp.data.dto.AttachmentDTO_Out
@@ -50,6 +51,21 @@ class AttachmentRepo constructor(private val context: Context) {
         })
 
         return attachmentDtoOut
+    }
+
+    companion object {
+        @SuppressLint("StaticFieldLeak")
+        private var Instance: AttachmentRepo? = null
+
+        fun initialize(context: Context) {
+            if (Instance == null)
+                Instance = AttachmentRepo(context)
+        }
+
+        fun get(): AttachmentRepo {
+            if (Instance != null) return Instance!!
+            throw IllegalStateException("Ticket Repository not initialized")
+        }
     }
 
 }

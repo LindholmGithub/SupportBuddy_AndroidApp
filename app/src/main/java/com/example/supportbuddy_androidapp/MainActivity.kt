@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
+import com.example.supportbuddy_androidapp.data.AttachmentRepo
 import com.example.supportbuddy_androidapp.data.callback.ICallback
 import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.data.TicketRepo
@@ -45,6 +46,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         TicketRepo.initialize(this)
+        AttachmentRepo.initialize(this)
 
         imgLogo.setImageResource(R.drawable.onlylogo)
         AddTicketButton.setOnClickListener {
