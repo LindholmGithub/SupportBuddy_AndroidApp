@@ -1,32 +1,42 @@
 package com.example.supportbuddy_androidapp
 
-import android.app.Activity
+import android.Manifest
 import android.content.Context
-import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.camera.core.CameraSelector
+import androidx.camera.core.Preview
+import androidx.camera.lifecycle.ProcessCameraProvider
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.supportbuddy_androidapp.data.*
 import com.example.supportbuddy_androidapp.data.callback.ITicketCallback
 import com.example.supportbuddy_androidapp.data.models.Answer
 import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.utils.UIUtils
 import kotlinx.android.synthetic.main.activity_edit_ticket.*
+import java.io.File
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Executors
+
 
 class EditTicketActivity : AppCompatActivity() {
     private lateinit var ticketRepo: TicketRepo
     private var editTicketId : Int = 0
     private var editTicketObject : Ticket? = null
-    private var m_Text = ""
+    private var answerText = ""
     private var isClosed : Boolean = false
-    private var activityTest : Activity = this
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val errorMessage = "No application found to handle action!"
@@ -45,7 +55,6 @@ class EditTicketActivity : AppCompatActivity() {
         }
 
         super.onCreate(savedInstanceState)
-
         setContentView(R.layout.activity_edit_ticket)
 
         supportActionBar?.hide()
@@ -61,25 +70,37 @@ class EditTicketActivity : AppCompatActivity() {
             TicketAnswerButton.isEnabled = true
             TicketCloseButton.isEnabled = true
             TicketDeleteButton.isEnabled = false
+            AddAnswerLayout.visibility = LinearLayout.VISIBLE
 
             TicketAnswerButton.setOnClickListener {
-                showDialog()
+                // Here you get get input text from the Edittext
+                answerText = addAnswerText.text.toString()
+                ticketRepo.addTicketAnswer(editTicketId, answerText)
+
+            }
+            addAttachmentButton.setOnClickListener {
+                onClickPhoto()
             }
             TicketCloseButton.setOnClickListener{
                 closeTicket()
-                println(isClosed)
                 isClosed = true
-                activityTest.recreate()
             }
         } else {
             TicketAnswerButton.isEnabled = false
             TicketCloseButton.isEnabled = false
             TicketDeleteButton.isEnabled = true
+            AddAnswerLayout.visibility = LinearLayout.GONE
 
             TicketDeleteButton.setOnClickListener{
                 deleteTicket()
             }
         }
+    }
+
+
+    private fun onClickPhoto(){
+        val intent = Intent(this, CameraActivity::class.java)
+        startActivity(intent)
     }
 
     override fun onResume(){
@@ -111,7 +132,6 @@ class EditTicketActivity : AppCompatActivity() {
         ticketRepo.closeTicket(editTicketId)
     }
 
-
     private fun setTicketAdapter(){
         ticketRepo = TicketRepo.get()
         ticketRepo.getTicketById(editTicketId, object: ITicketCallback {
@@ -133,22 +153,6 @@ class EditTicketActivity : AppCompatActivity() {
         val adapter = AnswerAdapter(this, answers.toTypedArray())
         lvAnswers.adapter = adapter
         UIUtils().setListViewHeightBasedOnItems(lvAnswers)
-    }
-
-    private fun showDialog(){
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Answer:")
-        val input = EditText(this)
-        input.setHint("Enter message")
-        input.inputType = InputType.TYPE_CLASS_TEXT
-        builder.setView(input)
-        builder.setPositiveButton("Ok", DialogInterface.OnClickListener{ dialog, which ->
-            // Here you get get input text from the Edittext
-            m_Text = input.text.toString()
-            ticketRepo.addTicketAnswer(editTicketId, m_Text)
-        })
-        builder.setNegativeButton("Cancel", DialogInterface.OnClickListener{dialog, which -> dialog.cancel()})
-        builder.show()
     }
 
     private fun endEditTicketActivity() {

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import com.example.supportbuddy_androidapp.data.LoginRepo
 import com.example.supportbuddy_androidapp.data.callback.ILoginCallback
+import com.example.supportbuddy_androidapp.data.models.AuthUser
 import kotlinx.android.synthetic.main.activity_login.*
 
 class LoginActivity : AppCompatActivity() {
@@ -32,8 +33,12 @@ class LoginActivity : AppCompatActivity() {
 
     private fun startMainActivity(intent: Intent, username: String, password: String){
         loginRepo = LoginRepo.get()
+        val newBundle = Bundle()
         loginRepo.authenticateLogin(object: ILoginCallback {
-            override fun onAuthReady() {
+            override fun onAuthReady(authUser: AuthUser) {
+                newBundle.putString("authUserStatus", authUser.status)
+                newBundle.putString("basicAuthString", authUser.basicAuthString)
+                intent.putExtras(newBundle)
                 startActivity(intent)
             }},username,password)
     }

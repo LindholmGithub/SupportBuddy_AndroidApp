@@ -15,17 +15,31 @@ import android.widget.TextView
 import com.example.supportbuddy_androidapp.data.callback.ICallback
 import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.data.TicketRepo
+import com.example.supportbuddy_androidapp.data.models.AuthUser
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var ticketRepo : TicketRepo
+    private var currentAuthUser : AuthUser = AuthUser(null,null)
+
 
     companion object{
         val TAG = "xyz"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+        if(intent.extras != null){
+            val b = intent.extras!!
+            val authUserStatus = b.getString("authUserStatus")
+            val basicAuthString = b.getString("basicAuthString")
+            if(authUserStatus == "OK" && basicAuthString != null){
+                currentAuthUser.status = authUserStatus
+                currentAuthUser.basicAuthString = basicAuthString
+            }
+        }
+
         super.onCreate(savedInstanceState)
         supportActionBar?.hide()
         setContentView(R.layout.activity_main)

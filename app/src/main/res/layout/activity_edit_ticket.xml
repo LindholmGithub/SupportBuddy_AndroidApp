@@ -126,6 +126,67 @@
                     android:id="@+id/lvAnswers"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+
+                <LinearLayout
+                    android:id="@+id/AddAnswerLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp"
+                        android:ems="10"
+                        android:text="Add Answer:"
+                        android:textColor="@color/supportBlue"
+                        android:textSize="18sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/addAnswerText"
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:textSize="18sp"
+                        android:hint="Answer text here..."/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tvImagePath"
+                            android:layout_width="190dp"
+                            android:layout_height="50dp"
+                            android:layout_marginEnd="5dp"
+                            android:hint="Image Path"
+                            android:gravity="center_vertical"
+                            android:paddingStart="3dp"
+                            android:textAlignment="gravity"
+                            android:textSize="16sp" />
+
+                        <Button
+                            android:id="@+id/addAttachmentButton"
+                            android:layout_width="190dp"
+                            android:layout_height="60dp"
+                            android:backgroundTint="@color/supportBlue"
+                            android:text="Image Attachment"/>
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/TicketAnswerButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="75dp"
+                        android:backgroundTint="@color/supportLightBlue"
+                        android:enabled="false"
+                        android:text="Answer" />
+
+                </LinearLayout>
+
+
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
@@ -174,26 +235,18 @@
         >
 
         <Button
-            android:id="@+id/TicketAnswerButton"
-            android:layout_width="117dp"
-            android:layout_height="75dp"
-            android:backgroundTint="@color/supportLightBlue"
-            android:enabled="true"
-            android:text="Answer" />
-
-        <Button
             android:id="@+id/TicketCloseButton"
-            android:layout_width="117dp"
+            android:layout_width="190dp"
             android:layout_height="75dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="5dp"
             android:backgroundTint="@color/yellow"
-            android:text="Close Ticket"
-            android:enabled="true"/>
+            android:enabled="true"
+            android:text="Close Ticket" />
 
         <Button
             android:id="@+id/TicketDeleteButton"
-            android:layout_width="117dp"
+            android:layout_width="190dp"
             android:layout_height="75dp"
             android:backgroundTint="@color/red"
             android:enabled="false"
