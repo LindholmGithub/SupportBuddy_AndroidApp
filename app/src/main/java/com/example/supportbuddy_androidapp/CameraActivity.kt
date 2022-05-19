@@ -11,6 +11,8 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -107,11 +109,12 @@ class CameraActivity : AppCompatActivity() {
 
     private fun setPicture() {
         if (!picturePath.contentEquals("")) {
+            val takenPictureTest = findViewById<ImageView>(R.id.takenPicture)
             viewFinder.visibility = View.INVISIBLE
             Log.d(TAG, "$picturePath: ER PATH2!!")
             val uri: Uri = Uri.parse(picturePath)
-            takenPicture.setImageURI(uri)
-            takenPicture.visibility= View.VISIBLE
+            takenPictureTest.setImageURI(uri)
+            takenPictureTest.visibility= View.VISIBLE
             Log.d(TAG, "$picturePath: ER PATH1!!")
         }
     }
