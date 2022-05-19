@@ -30,6 +30,8 @@ class AttachmentRepo constructor(private val context: Context) {
             params.put("file", attachmentFile)
         } catch(e : FileNotFoundException) {}
 
+        params.setForceMultipartEntityContentType(true)
+
         httpClient.post(context, url, params, object : JsonHttpResponseHandler() {
             override fun onSuccess(
                 statusCode: Int,
