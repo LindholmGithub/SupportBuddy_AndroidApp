@@ -1,8 +1,18 @@
 package com.example.supportbuddy_androidapp.data
 
 import android.content.Context
+import android.util.JsonReader
 import com.example.supportbuddy_androidapp.data.dto.AttachmentDTO_Out
 import com.loopj.android.http.AsyncHttpClient
+import com.loopj.android.http.AsyncHttpResponseHandler
+import com.loopj.android.http.JsonHttpResponseHandler
+import com.loopj.android.http.RequestParams
+import cz.msebera.android.httpclient.Header
+import org.json.JSONArray
+import org.json.JSONObject
+import org.json.JSONTokener
+import java.io.File
+import java.io.FileNotFoundException
 
 class AttachmentRepo constructor(private val context: Context) {
 
@@ -10,7 +20,35 @@ class AttachmentRepo constructor(private val context: Context) {
     private val httpClient: AsyncHttpClient = AsyncHttpClient()
 
     fun addAttachment(attachmentUrl: String) : AttachmentDTO_Out{
-        val attachmentDtoOut = AttachmentDTO_Out(0,"")
+        var attachmentDtoOut = AttachmentDTO_Out(0,"")
+
+        val attachmentFile = File(attachmentUrl)
+        val params = RequestParams()
+
+        try {
+            params.put("file", attachmentFile)
+        } catch(e : FileNotFoundException) {}
+
+        httpClient.post(context, url, params, object : JsonHttpResponseHandler() {
+            override fun onSuccess(
+                statusCode: Int,
+                headers: Array<out Header>?,
+                response: JSONArray?
+            ) {
+                super.onSuccess(statusCode, headers, response)
+
+                val parsedJson = JSONTokener(response.toString()).nextValue() as JSONObject
+
+                val attachmentId = parsedJson.getInt("id")
+                val attachmentWebUrl = parsedJson.getString("url")
+
+                val newAttachment = AttachmentDTO_Out(attachmentId, attachmentWebUrl)
+
+                attachmentDtoOut = newAttachment
+
+            }
+        })
+
         return attachmentDtoOut
     }
 

@@ -18,6 +18,8 @@ import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.example.supportbuddy_androidapp.data.AttachmentRepo
+import com.example.supportbuddy_androidapp.data.TicketRepo
 import com.example.supportbuddy_androidapp.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.text.SimpleDateFormat
@@ -35,6 +37,8 @@ class CameraActivity : AppCompatActivity() {
 
     private var isFrontCamera: Boolean = false
     private var picturePath: String = ""
+
+    private lateinit var attachRepo : AttachmentRepo
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +66,16 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun onClickSave() {
-        val data = Intent().apply { putExtra("friendPhoto", picturePath) }
-        setResult(Activity.RESULT_OK, data)
-        finish()
+        val attachmentObject = attachRepo.addAttachment(picturePath)
+
+        if(attachmentObject.id > 0) {
+            val data = Intent().apply { putExtra("attachmentId", attachmentObject.id) }
+            setResult(Activity.RESULT_OK, data)
+            finish()
+        }
+        else {
+            Toast.makeText(this, "Something went wrong :(", Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun onClickPhoto() {
