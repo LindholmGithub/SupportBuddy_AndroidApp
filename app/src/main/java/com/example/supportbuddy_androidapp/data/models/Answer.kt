@@ -5,5 +5,6 @@ data class Answer(
     val authorFirstName: String,
     val authorLastName: String,
     val message: String,
+    val attachmentUrl: String,
     val timeStamp: String
 )

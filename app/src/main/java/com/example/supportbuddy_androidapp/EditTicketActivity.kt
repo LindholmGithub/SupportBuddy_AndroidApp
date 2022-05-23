@@ -1,8 +1,9 @@
 package com.example.supportbuddy_androidapp
 
-import android.R.attr
+import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -117,7 +118,30 @@ class EditTicketActivity : AppCompatActivity() {
         TicketHeader.setText("Ticket #${ticket.id}")
         TicketFullName.setText("${ticket.firstName} ${ticket.lastName}")
         TicketEmail.setText("E-mail: ${ticket.email}")
+        TicketEmail.setOnClickListener{
+            val uri = "mailto:" + ticket.email
+            val mailIntent: Intent = Uri.parse(uri).let { mail ->
+                Intent(Intent.ACTION_SENDTO, mail)
+            }
+            mailIntent.putExtra(Intent.EXTRA_SUBJECT, "From SupportBuddy: ")
+            try {
+                startActivity(mailIntent)
+            } catch (e: ActivityNotFoundException){
+                Toast.makeText(this, "No application found to handle action, try again", Toast.LENGTH_SHORT).show()
+            }
+        }
         TicketPhone.setText("Phone: ${ticket.phoneNumber}")
+        TicketPhone.setOnClickListener{
+            val uri = "tel:" + ticket.phoneNumber
+            val callIntent: Intent = Uri.parse(uri).let { number ->
+                Intent(Intent.ACTION_DIAL, number)
+            }
+            try {
+                startActivity(callIntent)
+            } catch (e: ActivityNotFoundException){
+                Toast.makeText(this, "No application found to handle action, try again", Toast.LENGTH_SHORT).show()
+            }
+        }
         TicketStatus.setText("Ticket Status: ${ticket.status}")
         TicketSubject.setText(ticket.subject)
         TicketMessage.setText(ticket.message)
