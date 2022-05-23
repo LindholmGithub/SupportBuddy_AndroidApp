@@ -23,6 +23,8 @@ class LoginRepo constructor(private val context: Context) {
     private val url = "http://vps.qvistgaard.me:8980/api/Auth/"
     private val httpClient: AsyncHttpClient = AsyncHttpClient()
 
+    private var authString = ""
+
     fun authenticateLogin(callback: ILoginCallback,username: String, password: String){
         val authDto = AuthDTO_Out(username,password)
         val gson = GsonBuilder().disableHtmlEscaping().create()
@@ -44,7 +46,7 @@ class LoginRepo constructor(private val context: Context) {
                 responseBody: ByteArray?,
                 error: Throwable?
             ) {
-                Log.d(MainActivity.TAG, "Failure in authentication. StatusCode = $statusCode")
+                callback.onAuthFailure()
             }
         })
     }
@@ -64,6 +66,14 @@ class LoginRepo constructor(private val context: Context) {
             e.printStackTrace()
         }
         throw Exception("Error Exception")
+    }
+
+    public fun setAuthString(str : String) {
+        authString = str
+    }
+
+    public fun getAuthString() : String {
+        return authString
     }
 
     companion object {

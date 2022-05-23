@@ -24,12 +24,16 @@ class TicketRepo constructor(private val context: Context) {
 
     private val httpClient: AsyncHttpClient = AsyncHttpClient()
 
+    private val loginRepo: LoginRepo = LoginRepo.get()
+
     init {
+        Log.d("TAG", loginRepo.getAuthString())
         //httpClient.addHeader()
     }
 
 
     fun getAll(callback: ICallback){
+        httpClient.removeHeader("Authorization")
         httpClient.get(url, object : AsyncHttpResponseHandler(){
             override fun onSuccess(
                 statusCode: Int,
@@ -53,6 +57,7 @@ class TicketRepo constructor(private val context: Context) {
     }
 
     fun getTicketById(id: Int, callback: ITicketCallback) {
+        httpClient.removeHeader("Authorization")
         var ticket: Ticket
         httpClient.get(url + "/" + id, object : AsyncHttpResponseHandler(){
             override fun onSuccess(
@@ -77,6 +82,7 @@ class TicketRepo constructor(private val context: Context) {
     }
 
     fun addTicket(newSubject: String, newMessage: String, newEmail: String, newFirstName: String, newLastName: String, newPhone: Int): TicketDTO_Out {
+        httpClient.removeHeader("Authorization")
         val newTicket = TicketDTO_Out(newSubject,newMessage,newEmail,newFirstName,newLastName,newPhone)
         val gson = GsonBuilder().disableHtmlEscaping().create()
         val jsonTicket: String = gson.toJson(newTicket)
@@ -108,6 +114,7 @@ class TicketRepo constructor(private val context: Context) {
         val gson = Gson()
         val jsonString : String = gson.toJson(jsonMap)
         val entity = StringEntity(jsonString)
+        httpClient.addHeader("Authorization", "Basic " + loginRepo.getAuthString())
         httpClient.post(context, url + "/" + id, entity, "application/json", object : AsyncHttpResponseHandler(){
             override fun onSuccess(
                 statusCode: Int,
@@ -170,6 +177,7 @@ class TicketRepo constructor(private val context: Context) {
     }
 
     fun closeTicket(id: Int){
+        httpClient.removeHeader("Authorization")
         httpClient.post(url + "/" + id + "/close", object : AsyncHttpResponseHandler(){ override fun onSuccess(
             statusCode: Int,
             headers: Array<out Header>?,
@@ -187,6 +195,7 @@ class TicketRepo constructor(private val context: Context) {
     }
 
     fun deleteTicket(id: Int) {
+        httpClient.removeHeader("Authorization")
         httpClient.delete(context, url + "/" + id, object : AsyncHttpResponseHandler(){
             override fun onSuccess(
                 statusCode: Int,

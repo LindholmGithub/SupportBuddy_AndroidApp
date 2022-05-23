@@ -38,8 +38,18 @@ class LoginActivity : AppCompatActivity() {
             override fun onAuthReady(authUser: AuthUser) {
                 newBundle.putString("authUserStatus", authUser.status)
                 newBundle.putString("basicAuthString", authUser.basicAuthString)
+                loginRepo.setAuthString(authUser.basicAuthString!!)
                 intent.putExtras(newBundle)
                 startActivity(intent)
-            }},username,password)
+            }
+
+            override fun onAuthFailure() {
+                showWrongCredentialsError()
+            }
+        },username,password)
+    }
+
+    private fun showWrongCredentialsError() {
+        Toast.makeText(this, "Username and/or password is wrong!", Toast.LENGTH_SHORT).show()
     }
 }
