@@ -68,11 +68,11 @@ class LoginRepo constructor(private val context: Context) {
         throw Exception("Error Exception")
     }
 
-    public fun setAuthString(str : String) {
+    fun setAuthString(str : String) {
         authString = str
     }
 
-    public fun getAuthString() : String {
+    fun getAuthString() : String {
         return authString
     }
 
