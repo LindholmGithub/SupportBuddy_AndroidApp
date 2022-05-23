@@ -15,6 +15,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.example.supportbuddy_androidapp.data.*
 import com.example.supportbuddy_androidapp.data.callback.ITicketCallback
 import com.example.supportbuddy_androidapp.data.models.Answer
@@ -217,8 +218,7 @@ class EditTicketActivity : AppCompatActivity() {
             dateView.text = a.timeStamp
 
             if(a.attachmentUrl != null && a.attachmentUrl.isNotEmpty()) {
-                val newurl = URL(a.attachmentUrl)
-                attachView.setImageBitmap(BitmapFactory.decodeStream(newurl.openConnection().getInputStream()))
+                Glide.with(context).load(a.attachmentUrl).into(attachView);
             }
 
             return resView
