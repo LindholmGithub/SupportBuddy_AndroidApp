@@ -50,8 +50,9 @@
         android:layout_weight="0.2">
         <ImageView
             android:id="@+id/attachmentThumbnail"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="85dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             />
     </RelativeLayout>
 </LinearLayout>
