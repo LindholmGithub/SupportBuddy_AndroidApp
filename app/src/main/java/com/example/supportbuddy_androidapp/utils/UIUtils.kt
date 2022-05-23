@@ -41,7 +41,7 @@ class UIUtils {
 
             // Set list height.
             val params: ViewGroup.LayoutParams = listView.getLayoutParams()
-            params.height = totalItemsHeight + totalDividersHeight
+            params.height = totalItemsHeight + totalDividersHeight + 150
             listView.setLayoutParams(params)
             listView.requestLayout()
             true
