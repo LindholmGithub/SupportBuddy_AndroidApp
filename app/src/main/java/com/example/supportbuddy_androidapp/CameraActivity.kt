@@ -4,22 +4,22 @@ import android.app.Activity
 import android.content.ContentValues
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.database.Cursor
 import android.net.Uri
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.loader.content.CursorLoader
 import com.example.supportbuddy_androidapp.data.AttachmentRepo
-import com.example.supportbuddy_androidapp.data.TicketRepo
 import com.example.supportbuddy_androidapp.databinding.ActivityMainBinding
 import kotlinx.android.synthetic.main.activity_camera.*
 import java.text.SimpleDateFormat
@@ -112,6 +112,10 @@ class CameraActivity : AppCompatActivity() {
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
                     val msg = "Photo capture succeeded: ${output.savedUri}"
                     picturePath = "${output.savedUri}"
+
+                    if(output.savedUri != null)
+                        picturePath = getRealPathFromURI(output.savedUri!!)
+
                     Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()
                     Log.d(TAG, msg)
                     setPicture()
@@ -222,5 +226,16 @@ class CameraActivity : AppCompatActivity() {
         } else {
             finish()
         }
+    }
+
+    private fun getRealPathFromURI(contentUri: Uri): String {
+        val proj = arrayOf(MediaStore.Images.Media.DATA)
+        val loader = CursorLoader(this, contentUri, proj, null, null, null)
+        val cursor: Cursor? = loader.loadInBackground()
+        val column_index: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        val result: String = cursor.getString(column_index)
+        cursor.close()
+        return result
     }
 }
