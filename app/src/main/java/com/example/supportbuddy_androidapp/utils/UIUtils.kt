@@ -1,9 +1,16 @@
 package com.example.supportbuddy_androidapp.utils
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ListAdapter
 import android.widget.ListView
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.net.URL
 
 
 class UIUtils {

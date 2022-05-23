@@ -3,6 +3,7 @@ package com.example.supportbuddy_androidapp
 import android.content.ActivityNotFoundException
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -20,6 +21,7 @@ import com.example.supportbuddy_androidapp.data.models.Answer
 import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.utils.UIUtils
 import kotlinx.android.synthetic.main.activity_edit_ticket.*
+import java.net.URL
 
 
 class EditTicketActivity : AppCompatActivity() {
@@ -215,9 +217,10 @@ class EditTicketActivity : AppCompatActivity() {
             dateView.text = a.timeStamp
 
             if(a.attachmentUrl != null && a.attachmentUrl.isNotEmpty()) {
-                attachView.setImageURI(Uri.parse(a.attachmentUrl))
+                val newurl = URL(a.attachmentUrl)
+                attachView.setImageBitmap(BitmapFactory.decodeStream(newurl.openConnection().getInputStream()))
             }
-            
+
             return resView
         }
     }
