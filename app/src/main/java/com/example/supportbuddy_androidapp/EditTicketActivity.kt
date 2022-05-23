@@ -209,11 +209,15 @@ class EditTicketActivity : AppCompatActivity() {
             val nameView = resView.findViewById<TextView>(R.id.tvAnswerName)
             val messageView = resView.findViewById<TextView>(R.id.tvAnswerMessage)
             val dateView = resView.findViewById<TextView>(R.id.tvAnswerDate)
+            val attachView = resView.findViewById<ImageView>(R.id.attachmentThumbnail)
             nameView.text = a.authorFirstName + " " + a.authorLastName
             messageView.text = a.message
             dateView.text = a.timeStamp
 
-
+            if(a.attachmentUrl != null && a.attachmentUrl.isNotEmpty()) {
+                attachView.setImageURI(Uri.parse(a.attachmentUrl))
+            }
+            
             return resView
         }
     }
