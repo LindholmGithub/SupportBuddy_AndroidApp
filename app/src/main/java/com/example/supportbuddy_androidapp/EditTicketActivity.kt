@@ -1,11 +1,12 @@
 package com.example.supportbuddy_androidapp
 
-import android.Manifest
+import android.R.attr
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,12 +20,15 @@ import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.utils.UIUtils
 import kotlinx.android.synthetic.main.activity_edit_ticket.*
 
+
 class EditTicketActivity : AppCompatActivity() {
     private lateinit var ticketRepo: TicketRepo
     private var editTicketId : Int = 0
     private var editTicketObject : Ticket? = null
     private var answerText = ""
     private var isClosed : Boolean = false
+
+    private var attachmentId : Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         val errorMessage = "No application found to handle action!"
@@ -49,10 +53,24 @@ class EditTicketActivity : AppCompatActivity() {
         }
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == 1) {
+            if (resultCode == RESULT_OK) {
+                val result: Int = data!!.getIntExtra("attachmentId",-1)
+
+                tvImagePath.hint = "ID: " + result
+
+                attachmentId = result
+            }
+        }
+    }
+
 
     private fun onClickPhoto(){
         val intent = Intent(this, CameraActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, 1)
     }
 
     override fun onResume(){
@@ -86,6 +104,7 @@ class EditTicketActivity : AppCompatActivity() {
     }
 
     private fun setTicketAdapter(){
+        Log.d("XYZ", "It runs :-)")
         ticketRepo = TicketRepo.get()
         ticketRepo.getTicketById(editTicketId, object: ITicketCallback {
             override fun onTicketReady(ticket: Ticket) {
@@ -120,7 +139,10 @@ class EditTicketActivity : AppCompatActivity() {
             TicketAnswerButton.setOnClickListener {
                 // Here you get get input text from the Edittext
                 answerText = addAnswerText.text.toString()
-                ticketRepo.addTicketAnswer(editTicketId, answerText)
+                ticketRepo.addTicketAnswer(editTicketId, answerText, attachmentId)
+                Toast.makeText(this, "Answer was added :-)", Toast.LENGTH_SHORT).show()
+                finish();
+                startActivity(getIntent());
 
             }
             addAttachmentButton.setOnClickListener {

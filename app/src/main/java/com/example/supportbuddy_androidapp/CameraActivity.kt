@@ -232,7 +232,7 @@ class CameraActivity : AppCompatActivity() {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(this, contentUri, proj, null, null, null)
         val cursor: Cursor? = loader.loadInBackground()
-        val column_index: Int = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        val column_index: Int = cursor!!.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
         cursor.moveToFirst()
         val result: String = cursor.getString(column_index)
         cursor.close()

@@ -100,9 +100,11 @@ class TicketRepo constructor(private val context: Context) {
         return newTicket
     }
 
-    fun addTicketAnswer(id: Int, message: String): Any {
+    fun addTicketAnswer(id: Int, message: String, attachmentId: Int): Any {
         val jsonMap : MutableMap<String, String> = mutableMapOf()
         jsonMap.put("message", message)
+        if(attachmentId > 0)
+            jsonMap.put("attachmentId", attachmentId.toString())
         val gson = Gson()
         val jsonString : String = gson.toJson(jsonMap)
         val entity = StringEntity(jsonString)
