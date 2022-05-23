@@ -27,7 +27,12 @@ class AttachmentRepo constructor(private val context: Context) {
 
     private val policy : StrictMode.ThreadPolicy = StrictMode.ThreadPolicy.Builder().permitAll().build()
 
-
+    /**
+     * Makes a HTTP POST request to defined api url.
+     *
+     * @param attachmentUrl Url to the image taken with the built-in camera.
+     * @return AttachmentDTO_Out based on the response from the API.
+     */
     fun addAttachment(attachmentUrl: String) : AttachmentDTO_Out{
         StrictMode.setThreadPolicy(policy)
 
@@ -65,41 +70,12 @@ class AttachmentRepo constructor(private val context: Context) {
         val newAttachment = AttachmentDTO_Out(attachmentId, attachmentWebUrl)
 
         attachmentDtoOut = newAttachment
-
-        /*
-        val params = RequestParams()
-
-        try {
-            params.put("file", attachmentFile)
-            params.put("filename", attachmentFile.name)
-        } catch(e : FileNotFoundException) {}
-
-        params.setForceMultipartEntityContentType(true)
-
-        httpClient.post(context, url, params, object : JsonHttpResponseHandler() {
-            override fun onSuccess(
-                statusCode: Int,
-                headers: Array<out Header>?,
-                response: JSONArray?
-            ) {
-                super.onSuccess(statusCode, headers, response)
-
-                val parsedJson = JSONTokener(response.toString()).nextValue() as JSONObject
-
-                val attachmentId = parsedJson.getInt("id")
-                val attachmentWebUrl = parsedJson.getString("url")
-
-                val newAttachment = AttachmentDTO_Out(attachmentId, attachmentWebUrl)
-
-                attachmentDtoOut = newAttachment
-
-            }
-        })
-         */
-        println(attachmentDtoOut.url)
         return attachmentDtoOut
     }
 
+    /**
+     * Singleton methods to access class when called for.
+     */
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var Instance: AttachmentRepo? = null

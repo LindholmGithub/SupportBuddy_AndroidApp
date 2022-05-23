@@ -67,6 +67,9 @@ class CameraActivity : AppCompatActivity() {
         cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
+    /**
+     * Adds image attachment to answer upon pressing Save after taking an image.
+     */
     private fun onClickSave() {
         val attachmentObject = attachRepo.addAttachment(picturePath)
 
@@ -80,6 +83,10 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Captures image from the camera.
+     * Unlocks the "Save" button, and runs the "setPicture" method.
+     */
     private fun onClickPhoto() {
         btnSavePhoto.isEnabled = true
 
@@ -124,6 +131,9 @@ class CameraActivity : AppCompatActivity() {
         )
     }
 
+    /**
+     * Method that takes the captured image, and puts it onto the screen.
+     */
     private fun setPicture() {
         if (!picturePath.contentEquals("")) {
             val takenPictureTest = findViewById<ImageView>(R.id.takenPicture)
@@ -137,6 +147,9 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Method that starts the camera. This method is called in onCreate.
+     */
     private fun startCamera() {
         val cameraProviderFuture = ProcessCameraProvider.getInstance(this)
 
@@ -161,6 +174,11 @@ class CameraActivity : AppCompatActivity() {
         }, ContextCompat.getMainExecutor(this))
     }
 
+
+    /**
+     * Method that determines whether the user is using the back or front camera.
+     * Changed by tapping the Switch on the camera screen.
+     */
     private fun useFrontOrBackCamera(defaultBackCamera: CameraSelector, cameraProvider: ProcessCameraProvider, preview: Preview) {
 
         val cameraSelector = defaultBackCamera
@@ -182,6 +200,9 @@ class CameraActivity : AppCompatActivity() {
             baseContext,it ) == PackageManager.PERMISSION_GRANTED
     }
 
+    /**
+     * Method that overrides the onDestroy normal functionality by also shutting down the cameraExecutor.
+     */
     override fun onDestroy() {
         super.onDestroy()
         cameraExecutor.shutdown()
@@ -217,6 +238,10 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
+
+    /**
+     * Method that handles what happens when clicking on the exit button in the camera activity.
+     */
     private fun onClickExit() {
         if (!picturePath.contentEquals("")) {
             picturePath = ""
@@ -228,6 +253,13 @@ class CameraActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Method that gets the path of the newly taken photo.
+     *
+     * @param contentUri URI from the photo taken.
+     *
+     * @return result - The real image path when stored on the phone.
+     */
     private fun getRealPathFromURI(contentUri: Uri): String {
         val proj = arrayOf(MediaStore.Images.Media.DATA)
         val loader = CursorLoader(this, contentUri, proj, null, null, null)

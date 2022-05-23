@@ -25,6 +25,14 @@ class LoginRepo constructor(private val context: Context) {
 
     private var authString = ""
 
+    /**
+     * Makes a HTTP POST request to defined api url.
+     *
+     * @param callback The callback interface in which the method is overridden in the activity that calls for it.
+     * @param username The username input that the user wrote when attempting to login.
+     * @param password The password input that the user wrote when attempting to login.
+     *
+     */
     fun authenticateLogin(callback: ILoginCallback,username: String, password: String){
         val authDto = AuthDTO_Out(username,password)
         val gson = GsonBuilder().disableHtmlEscaping().create()
@@ -51,6 +59,12 @@ class LoginRepo constructor(private val context: Context) {
         })
     }
 
+    /**
+     * Creates an instance of an AuthUser object, based on the response from the HTTP request.
+     *
+     * @param jsonString The data received from the backend, as a JSON string.
+     * @return AuthUser based on the converted JSON string data.
+     */
     private fun getAuthUserFromString(jsonString: String?): AuthUser {
         if (jsonString!!.startsWith("error")) {
             Log.d(MainActivity.TAG, "Error: $jsonString")
@@ -76,6 +90,9 @@ class LoginRepo constructor(private val context: Context) {
         return authString
     }
 
+    /**
+     * Singleton methods to access class when called for.
+     */
     companion object {
         @SuppressLint("StaticFieldLeak")
         private var Instance: LoginRepo? = null
