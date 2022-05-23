@@ -3,33 +3,21 @@ package com.example.supportbuddy_androidapp
 import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.camera.core.CameraSelector
-import androidx.camera.core.Preview
-import androidx.camera.lifecycle.ProcessCameraProvider
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.supportbuddy_androidapp.data.*
 import com.example.supportbuddy_androidapp.data.callback.ITicketCallback
 import com.example.supportbuddy_androidapp.data.models.Answer
 import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.utils.UIUtils
 import kotlinx.android.synthetic.main.activity_edit_ticket.*
-import java.io.File
-import java.util.concurrent.ExecutorService
-import java.util.concurrent.Executors
-
 
 class EditTicketActivity : AppCompatActivity() {
     private lateinit var ticketRepo: TicketRepo
@@ -43,14 +31,8 @@ class EditTicketActivity : AppCompatActivity() {
         if(intent.extras != null){
             val b = intent.extras!!
             val editId = b.getInt("editTicketId")
-            val editStatus = b.getString("editTicketStatus")
             if(editId != null && editId > 0){
                 editTicketId = editId
-            }
-            if(editStatus != null && editStatus == "Closed"){
-                isClosed = true
-            } else if (editStatus == "Open"){
-                isClosed = false
             }
         }
 
@@ -64,36 +46,6 @@ class EditTicketActivity : AppCompatActivity() {
         //Handler for Back Button
         GoBackButton.setOnClickListener {
             endEditTicketActivity()
-        }
-
-        if(!isClosed) {
-            TicketAnswerButton.isEnabled = true
-            TicketCloseButton.isEnabled = true
-            TicketDeleteButton.isEnabled = false
-            AddAnswerLayout.visibility = LinearLayout.VISIBLE
-
-            TicketAnswerButton.setOnClickListener {
-                // Here you get get input text from the Edittext
-                answerText = addAnswerText.text.toString()
-                ticketRepo.addTicketAnswer(editTicketId, answerText)
-
-            }
-            addAttachmentButton.setOnClickListener {
-                onClickPhoto()
-            }
-            TicketCloseButton.setOnClickListener{
-                closeTicket()
-                isClosed = true
-            }
-        } else {
-            TicketAnswerButton.isEnabled = false
-            TicketCloseButton.isEnabled = false
-            TicketDeleteButton.isEnabled = true
-            AddAnswerLayout.visibility = LinearLayout.GONE
-
-            TicketDeleteButton.setOnClickListener{
-                deleteTicket()
-            }
         }
     }
 
@@ -130,6 +82,7 @@ class EditTicketActivity : AppCompatActivity() {
 
     private fun closeTicket() {
         ticketRepo.closeTicket(editTicketId)
+        setTicketAdapter()
     }
 
     private fun setTicketAdapter(){
@@ -151,6 +104,44 @@ class EditTicketActivity : AppCompatActivity() {
         TicketMessage.setText(ticket.message)
         val answers: List<Answer> = ticket.answers.toList()
         val adapter = AnswerAdapter(this, answers.toTypedArray())
+
+
+        if(ticket.status == "Closed"){
+            isClosed = true
+        }
+
+        if(!isClosed) {
+
+            TicketAnswerButton.isEnabled = true
+            TicketCloseButton.isEnabled = true
+            TicketDeleteButton.isEnabled = false
+            AddAnswerLayout.visibility = LinearLayout.VISIBLE
+
+            TicketAnswerButton.setOnClickListener {
+                // Here you get get input text from the Edittext
+                answerText = addAnswerText.text.toString()
+                ticketRepo.addTicketAnswer(editTicketId, answerText)
+
+            }
+            addAttachmentButton.setOnClickListener {
+                onClickPhoto()
+            }
+            TicketCloseButton.setOnClickListener{
+                closeTicket()
+                isClosed = true
+            }
+
+        } else {
+            TicketAnswerButton.isEnabled = false
+            TicketCloseButton.isEnabled = false
+            TicketDeleteButton.isEnabled = true
+            AddAnswerLayout.visibility = LinearLayout.GONE
+
+            TicketDeleteButton.setOnClickListener{
+                deleteTicket()
+            }
+        }
+
         lvAnswers.adapter = adapter
         UIUtils().setListViewHeightBasedOnItems(lvAnswers)
     }

@@ -2,13 +2,10 @@ package com.example.supportbuddy_androidapp.data
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.JsonReader
+import android.net.Uri
+import android.os.StrictMode
 import com.example.supportbuddy_androidapp.data.dto.AttachmentDTO_Out
 import com.loopj.android.http.AsyncHttpClient
-import com.loopj.android.http.AsyncHttpResponseHandler
-import com.loopj.android.http.JsonHttpResponseHandler
-import com.loopj.android.http.RequestParams
-import cz.msebera.android.httpclient.Header
 import cz.msebera.android.httpclient.HttpResponse
 import cz.msebera.android.httpclient.client.HttpClient
 import cz.msebera.android.httpclient.client.methods.HttpPost
@@ -16,20 +13,24 @@ import cz.msebera.android.httpclient.entity.mime.MultipartEntityBuilder
 import cz.msebera.android.httpclient.entity.mime.content.FileBody
 import cz.msebera.android.httpclient.impl.client.DefaultHttpClient
 import cz.msebera.android.httpclient.message.BasicNameValuePair
-import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 import java.io.BufferedReader
 import java.io.File
-import java.io.FileNotFoundException
 import java.io.InputStreamReader
+import java.net.URI
 
 class AttachmentRepo constructor(private val context: Context) {
 
     private val url = "http://vps.qvistgaard.me:8980/api/attachment/"
     private val httpClient: AsyncHttpClient = AsyncHttpClient()
 
+    private val policy : StrictMode.ThreadPolicy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+
+
     fun addAttachment(attachmentUrl: String) : AttachmentDTO_Out{
+        StrictMode.setThreadPolicy(policy)
+
         var attachmentDtoOut = AttachmentDTO_Out(0,"")
 
         val customHttpClient : HttpClient = DefaultHttpClient()
@@ -53,7 +54,6 @@ class AttachmentRepo constructor(private val context: Context) {
         customHttpPost.entity = entity.build()
 
         val response : HttpResponse = customHttpClient.execute(customHttpPost)
-
         val reader : BufferedReader = BufferedReader(InputStreamReader(response.entity.content, "UTF-8"))
         val jsonResponse = reader.readLine()
 
@@ -96,7 +96,7 @@ class AttachmentRepo constructor(private val context: Context) {
             }
         })
          */
-
+        println(attachmentDtoOut.url)
         return attachmentDtoOut
     }
 

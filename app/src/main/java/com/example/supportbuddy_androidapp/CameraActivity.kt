@@ -76,7 +76,7 @@ class CameraActivity : AppCompatActivity() {
             finish()
         }
         else {
-            Toast.makeText(this, "Something went wrong :(", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Something went wrong. Try again.", Toast.LENGTH_SHORT).show()
         }
     }
 
@@ -126,6 +126,7 @@ class CameraActivity : AppCompatActivity() {
             viewFinder.visibility = View.INVISIBLE
             Log.d(TAG, "$picturePath: ER PATH2!!")
             val uri: Uri = Uri.parse(picturePath)
+            println(uri)
             takenPictureTest.setImageURI(uri)
             takenPictureTest.visibility= View.VISIBLE
             Log.d(TAG, "$picturePath: ER PATH1!!")
