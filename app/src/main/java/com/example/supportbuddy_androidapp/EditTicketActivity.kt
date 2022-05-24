@@ -34,6 +34,10 @@ class EditTicketActivity : AppCompatActivity() {
 
     private var attachmentId : Int = -1
 
+    /**
+     * Method that is ran when the activity runs.
+     * @param savedInstanceState Bundle received by the method that runs the activity. Containing information.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         val errorMessage = "No application found to handle action!"
         if(intent.extras != null){
@@ -57,6 +61,9 @@ class EditTicketActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Method that is ran when the activity gets a result.
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -71,17 +78,25 @@ class EditTicketActivity : AppCompatActivity() {
         }
     }
 
-
+    /**
+     * Method that starts the CameraActivity, with given context through an Intent.
+     */
     private fun onClickPhoto(){
         val intent = Intent(this, CameraActivity::class.java)
         startActivityForResult(intent, 1)
     }
 
+    /**
+     * Method that is ran when the activity is created and when it is resumed.
+     */
     override fun onResume(){
         super.onResume()
         setTicketAdapter()
     }
 
+    /**
+     * Method that runs an alert when a user requests the deletion of a Ticket.
+     */
     private fun deleteTicket() {
         val builder: AlertDialog.Builder = AlertDialog.Builder(this)
         builder.setTitle("Delete:")
@@ -102,13 +117,19 @@ class EditTicketActivity : AppCompatActivity() {
 
     }
 
+    /**
+     * Method that runs when the user requests the closing of a Ticket.
+     */
     private fun closeTicket() {
         ticketRepo.closeTicket(editTicketId)
         setTicketAdapter()
     }
 
+    /**
+     * Method that gets the specified Ticket from the repo.
+     */
     private fun setTicketAdapter(){
-        Log.d("XYZ", "It runs :-)")
+        Log.d("XYZ", "It runs")
         ticketRepo = TicketRepo.get()
         ticketRepo.getTicketById(editTicketId, object: ITicketCallback {
             override fun onTicketReady(ticket: Ticket) {
@@ -117,6 +138,13 @@ class EditTicketActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Method that fills the ticket information into the different activity views.
+     * It also controls whether the different buttons are enabled in the UI, by checking the status of the specific ticket.
+     *
+     * This method also handles what happens when a user presses an email or phone number belonging to a ticket user.
+     * @param ticket The ticket that has been collected by the repo.
+     */
     private fun setupTicketView(ticket: Ticket) {
         TicketHeader.setText("Ticket #${ticket.id}")
         TicketFullName.setText("${ticket.firstName} ${ticket.lastName}")
@@ -195,10 +223,18 @@ class EditTicketActivity : AppCompatActivity() {
         UIUtils().setListViewHeightBasedOnItems(lvAnswers)
     }
 
+    /**
+     * Ends the EditTicketActivity and returns to previous activity.
+     */
     private fun endEditTicketActivity() {
         finish()
     }
 
+    /**
+     * The internal class AnswerAdapter, setup for the answer textViews.
+     * @param context The context of the adapter.
+     * @param answers The list of answers to fill into "answer_cell.xml" listView.
+     */
     internal class AnswerAdapter(context: Context, private val answers: Array<Answer>) : ArrayAdapter<Answer>(context, 0, answers) {
         override fun getView(position: Int, v: View?, parent: ViewGroup): View {
             var v1: View? = v

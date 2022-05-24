@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import com.example.supportbuddy_androidapp.MainActivity
-import com.example.supportbuddy_androidapp.data.callback.ICallback
+import com.example.supportbuddy_androidapp.data.callback.ITicketsCallback
 import com.example.supportbuddy_androidapp.data.callback.ITicketCallback
 import com.example.supportbuddy_androidapp.data.dto.TicketDTO_Out
 import com.example.supportbuddy_androidapp.data.models.Ticket
@@ -26,18 +26,13 @@ class TicketRepo constructor(private val context: Context) {
 
     private val loginRepo: LoginRepo = LoginRepo.get()
 
-    init {
-        Log.d("TAG", loginRepo.getAuthString())
-        //httpClient.addHeader()
-    }
-
     /**
      * Makes a HTTP GET request for all Tickets to defined api url.
      *
-     * @param callback The callback interface in which the method is overridden in the activity that calls for it.
+     * @param ticketsCallback The callback interface in which the method is overridden in the activity that calls for it.
      *
      */
-    fun getAll(callback: ICallback){
+    fun getAll(ticketsCallback: ITicketsCallback){
         httpClient.removeHeader("Authorization")
         httpClient.get(url, object : AsyncHttpResponseHandler(){
             override fun onSuccess(
@@ -47,7 +42,7 @@ class TicketRepo constructor(private val context: Context) {
             ) {
                 val tickets = getTicketsFromString(String(responseBody!!))
                 Log.d(MainActivity.TAG, "Tickets received - ${tickets.size}")
-                callback.onTicketsReady( tickets )
+                ticketsCallback.onTicketsReady( tickets )
             }
 
             override fun onFailure(
@@ -151,7 +146,9 @@ class TicketRepo constructor(private val context: Context) {
                 statusCode: Int,
                 headers: Array<out Header>?,
                 responseBody: ByteArray?
-            ) {}
+            ) {
+                Log.d(MainActivity.TAG, "Success in addTicketAnswer")
+            }
 
             override fun onFailure(
                 statusCode: Int,

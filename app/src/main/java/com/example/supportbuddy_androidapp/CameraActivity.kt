@@ -40,6 +40,10 @@ class CameraActivity : AppCompatActivity() {
 
     private lateinit var attachRepo : AttachmentRepo
 
+    /**
+     * Method that is ran when the activity runs.
+     * @param savedInstanceState Bundle received by the method that runs the activity. Containing information.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewBinding = ActivityMainBinding.inflate(layoutInflater)

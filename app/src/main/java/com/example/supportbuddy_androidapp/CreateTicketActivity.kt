@@ -13,6 +13,10 @@ import kotlinx.android.synthetic.main.activity_create_ticket.*
 class CreateTicketActivity : AppCompatActivity() {
     private lateinit var ticketRepo: TicketRepo
 
+    /**
+     * Method that is ran when the activity runs.
+     * @param savedInstanceState Bundle received by the method that runs the activity. Containing information.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         val errorMessage = "No application found to handle action!"
         if(intent.extras != null){
@@ -62,6 +66,9 @@ class CreateTicketActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Method that ends the activity.
+     */
     private fun endCreateTicketActivity() {
         finish()
     }

@@ -13,7 +13,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.supportbuddy_androidapp.data.AttachmentRepo
-import com.example.supportbuddy_androidapp.data.callback.ICallback
+import com.example.supportbuddy_androidapp.data.callback.ITicketsCallback
 import com.example.supportbuddy_androidapp.data.models.Ticket
 import com.example.supportbuddy_androidapp.data.TicketRepo
 import com.example.supportbuddy_androidapp.data.models.AuthUser
@@ -29,6 +29,10 @@ class MainActivity : AppCompatActivity() {
         val TAG = "xyz"
     }
 
+    /**
+     * Method that is ran when the activity runs.
+     * @param savedInstanceState Bundle received by the method that runs the activity. Containing information.
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
 
         if(intent.extras != null){
@@ -58,26 +62,43 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Method that is ran when the activity runs or is resumed.
+     */
     override fun onResume() {
         super.onResume()
         setListTicketsAdapter()
     }
 
+    /**
+     * Method that sets up the listView by filling it with all tickets from ticketRepo.
+     */
     private fun setListTicketsAdapter(){
         ticketRepo = TicketRepo.get()
-        ticketRepo.getAll(object: ICallback {
+        ticketRepo.getAll(object: ITicketsCallback {
             override fun onTicketsReady(tickets: List<Ticket>) {
                 setupListView(tickets)
             }
         })
     }
 
+    /**
+     * Method that runs the CreateTicketActivity when the user clicks on the
+     * Create Ticket button in the application.
+     *
+     * @param b Bundle setup. Allows parsing data to other activities.
+     */
     private fun startCreateTicketActivity(b: Bundle) {
         val newIntent = Intent(this, CreateTicketActivity::class.java)
         newIntent.putExtras(b)
         startActivity(newIntent)
     }
 
+    /**
+     * Method that runs the startEditTicketActivity method when the user clicks on a specific Ticket in the ListView.
+     *
+     * @param position Position of the ticket that was clicked.
+     */
     private fun onTicketClick(position: Int){
         val clickedTicket = lvTickets.getItemAtPosition(position) as Ticket
         val newBundle = Bundle()
@@ -86,12 +107,20 @@ class MainActivity : AppCompatActivity() {
         startEditTicketActivity(newBundle)
     }
 
+    /**
+     * Method that starts the EditTicketActivity. Called from the onTicketClick method.
+     * @param b Bundle containing information about the clicked ticket from the onTicketClick method.
+     */
     private fun startEditTicketActivity(b: Bundle) {
         val newIntent = Intent(this, EditTicketActivity::class.java)
         newIntent.putExtras(b)
         startActivity(newIntent)
     }
 
+    /**
+     * Method that sets the adapter of the listView to be the TicketAdapter.
+     * @param tickets List of tickets received from setListTicketsAdapter()
+     */
     fun setupListView(tickets: List<Ticket>) {
         ticketRepo = TicketRepo.get()
         val adapter = TicketAdapter(this, tickets.toTypedArray())
@@ -100,6 +129,11 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "Listview adapter created with ${tickets.size} tickets")
     }
 
+    /**
+     * The internal class TicketAdapter, setup for the listView.
+     * @param context The context of the adapter.
+     * @param tickets The list of tickets to fill into the listView.
+     */
     internal class TicketAdapter(context: Context, private val tickets: Array<Ticket>) : ArrayAdapter<Ticket>(context, 0, tickets)
     {
         // These colors are used to toggle the variable background of the list items.
